@@ -89,7 +89,7 @@ const CO2IntensityChart = () => {
 
   // Add loading state with retro style
   if (isLoading) {
-    return <div className="retro-loading">LOADING DATA...</div>;
+    return <div className="retro-loading">LOADING DATA<span className="retro-loading-dots">...</span></div>;
   }
 
   // Check if data needs to be parsed with retro style

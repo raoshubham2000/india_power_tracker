@@ -1,3 +1,13 @@
+/* Add these at the top of your App.css file */
+:root {
+  --retro-bg-dark: #111122;
+  --retro-text: #00FFAA;
+  --retro-text-light: #00CCAA;
+  --retro-accent: #00FF66;
+  --retro-secondary: #00AAFF;
+  --retro-border: #334455;
+}
+
 #root {
   width: 100%;
   margin: 0;
@@ -55,24 +65,27 @@
 
 .app-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .app-header h1 {
-  font-size: 2.75rem;
+  font-size: 2rem;
   font-weight: 800;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   color: #2c3e50;
   letter-spacing: -0.5px;
   transition: color 0.3s;
 }
 
 .app-header p {
-  font-size: 1.25rem;
+  font-size: 0.9rem;
   color: #64748b;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 0.5rem;
 }
 
 .controls-section {
@@ -997,4 +1010,54 @@
   .retro-checkbox {
     background-color: #223344;
   }
+}
+
+/* Add these to your App.css file */
+.app-nav {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
+  gap: 15px;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: var(--retro-bg-dark);
+  border-bottom: 2px solid var(--retro-accent);
+}
+
+.nav-title {
+  color: var(--retro-accent);
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  font-size: 1.25rem;
+  margin-right: auto;
+  text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+  padding-left: 1rem;
+  letter-spacing: 1px;
+}
+
+.nav-btn-container {
+  display: flex;
+  gap: 15px;
+  padding-right: 1rem;
+}
+
+.nav-btn {
+  background-color: var(--retro-bg-dark);
+  color: var(--retro-text);
+  border: 2px solid var(--retro-border);
+  padding: 5px 12px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: rgba(0, 255, 170, 0.2);
+}
+
+.nav-btn.active {
+  background-color: var(--retro-accent);
+  color: black;
+  border-color: var(--retro-accent);
 }

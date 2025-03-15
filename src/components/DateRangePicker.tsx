@@ -146,75 +146,6 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
 
   return (
     <div className="retro-date-picker-container">
-      <div className="retro-preset-buttons">
-        <div className="retro-preset-group">
-          <span className="retro-preset-label">QUICK SELECT:</span>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1h' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('1h')}
-          >
-            1H
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '6h' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('6h')}
-          >
-            6H
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '12h' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('12h')}
-          >
-            12H
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1d' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('1d')}
-          >
-            1D
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '7d' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('7d')}
-          >
-            7D
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '14d' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('14d')}
-          >
-            14D
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1m' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('1m')}
-          >
-            1M
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '6m' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('6m')}
-          >
-            6M
-          </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1y' ? 'retro-active' : ''}`}
-            onClick={() => applyPreset('1y')}
-          >
-            1Y
-          </button>
-        </div>
-      </div>
-      
       <form className="retro-date-form" onSubmit={handleSubmit}>
         <div className="retro-form-group">
           <label htmlFor="start-date">
@@ -284,6 +215,75 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
           <span className="retro-btn-icon">►</span> UPDATE
         </button>
       </form>
+      
+      <div className="retro-preset-buttons">
+        <div className="retro-preset-group">
+          <span className="retro-preset-label">QUICK SELECT:</span>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '1h' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('1h')}
+          >
+            1H
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '6h' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('6h')}
+          >
+            6H
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '12h' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('12h')}
+          >
+            12H
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '1d' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('1d')}
+          >
+            1D
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '7d' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('7d')}
+          >
+            7D
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '14d' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('14d')}
+          >
+            14D
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '1m' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('1m')}
+          >
+            1M
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '6m' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('6m')}
+          >
+            6M
+          </button>
+          <button 
+            type="button" 
+            className={`retro-preset-btn ${activePreset === '1y' ? 'retro-active' : ''}`}
+            onClick={() => applyPreset('1y')}
+          >
+            1Y
+          </button>
+        </div>
+      </div>
       
       {useCurrentTime && activePreset && (
         <div className="retro-update-notice">

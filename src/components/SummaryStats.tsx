@@ -9,7 +9,7 @@ const SummaryStats = () => {
   const parsedData = useMemo(() => ensureDataParsed(data), [data]);
   
   if (isLoading) {
-    return <div className="retro-loading">LOADING STATS...</div>;
+    return <div className="retro-loading">LOADING STATS<span className="retro-loading-dots">...</span></div>;
   }
   
   if (!parsedData) {

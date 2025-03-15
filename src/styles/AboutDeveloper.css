@@ -1,0 +1,143 @@
+.about-developer-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Courier New', monospace;
+  color: var(--retro-text);
+  background-color: var(--retro-bg-dark);
+  border: 2px solid var(--retro-accent);
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
+}
+
+.developer-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--retro-accent);
+  padding-bottom: 20px;
+}
+
+.developer-header h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--retro-accent);
+  text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+}
+
+.developer-header h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--retro-secondary);
+}
+
+.contact-info {
+  font-size: 16px;
+  color: var(--retro-text-light);
+}
+
+.developer-section {
+  margin-bottom: 30px;
+  padding: 15px;
+  border: 1px solid var(--retro-border);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.developer-section h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: var(--retro-accent);
+  border-bottom: 1px dashed var(--retro-border);
+  padding-bottom: 8px;
+}
+
+.experience-item, .project-item {
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-left: 3px solid var(--retro-secondary);
+}
+
+.job-title h4, .project-item h4 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: var(--retro-secondary);
+}
+
+.job-title p, .project-item p {
+  font-size: 14px;
+  color: var(--retro-text-light);
+  margin-bottom: 10px;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 8px;
+  list-style-type: none;
+  position: relative;
+}
+
+li:before {
+  content: ">";
+  position: absolute;
+  left: -15px;
+  color: var(--retro-accent);
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.skills-column {
+  flex: 1;
+  min-width: 250px;
+}
+
+.skills-column h4 {
+  color: var(--retro-secondary);
+  margin-bottom: 10px;
+  text-decoration: underline;
+}
+
+.skills-list {
+  columns: 2;
+}
+
+.portfolio-link {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.retro-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--retro-accent);
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+}
+
+.retro-btn:hover {
+  background-color: var(--retro-secondary);
+  transform: scale(1.05);
+}
+
+.retro-btn-icon {
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .skills-container {
+    flex-direction: column;
+  }
+  
+  .skills-list {
+    columns: 1;
+  }
+} 

@@ -136,7 +136,7 @@ const PowerGenerationChart = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="retro-loading">LOADING DATA...</div>;
+    return <div className="retro-loading">LOADING DATA<span className="retro-loading-dots">...</span></div>;
   }
 
   if (!parsedData || !parsedData.timeseries_values) {

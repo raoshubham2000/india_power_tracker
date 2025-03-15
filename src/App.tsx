@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 import { fetchMeritDataAsync } from './store/slices/meritDataSlice'
@@ -6,10 +6,12 @@ import PowerGenerationChart from './components/PowerGenerationChart'
 import CO2IntensityChart from './components/CO2IntensityChart'
 import SummaryStats from './components/SummaryStats'
 import DateRangePicker from './components/DateRangePicker'
+import AboutDeveloper from './components/AboutDeveloper'
 
 function App() {
   const dispatch = useAppDispatch();
   const { data: meritData, isLoading, error } = useAppSelector(state => state.meritData);
+  const [showAboutDev, setShowAboutDev] = useState(false);
 
   useEffect(() => {
     // Load initial data for Feb 28, 2025
@@ -26,36 +28,55 @@ function App() {
   return (
     <div className="app redux-container">
       {isLoading && (
-        <div className="redux-loading-overlay">
-          <div className="redux-loading-spinner"></div>
+        <div className="retro-loading-overlay">
+          <div className="retro-loading">LOADING DATA<span className="retro-loading-dots">...</span></div>
         </div>
       )}
       
-      <header className="app-header">
-        <h1>Power Tracker</h1>
-        <p>Monitor power generation, demand, and CO2 intensity</p>
-      </header>
+      <nav className="app-nav">
+        <div className="nav-title">POWER TRACKER</div>
+        <div className="nav-btn-container">
+          <button 
+            className={`nav-btn ${!showAboutDev ? 'active' : ''}`} 
+            onClick={() => setShowAboutDev(false)}
+          >
+            DASHBOARD
+          </button>
+          <button 
+            className={`nav-btn ${showAboutDev ? 'active' : ''}`} 
+            onClick={() => setShowAboutDev(true)}
+          >
+            ABOUT DEV
+          </button>
+        </div>
+      </nav>
 
       <main className="app-content">
-        <section className="controls-section">
-          <DateRangePicker onDateRangeChange={handleDateRangeChange} />
-        </section>
+        {showAboutDev ? (
+          <AboutDeveloper />
+        ) : (
+          <>
+            <section className="controls-section">
+              <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+            </section>
 
-        {error && <div className="error-message">{error}</div>}
+            {error && <div className="error-message">{error}</div>}
 
-        <section className="stats-section">
-          <SummaryStats />
-        </section>
+            <section className="stats-section">
+              <SummaryStats />
+            </section>
 
-        <section className="charts-section">
-          <div className="chart-wrapper">
-            <PowerGenerationChart />
-          </div>
-          
-          <div className="chart-wrapper">
-            <CO2IntensityChart />
-          </div>
-        </section>
+            <section className="charts-section">
+              <div className="chart-wrapper">
+                <PowerGenerationChart />
+              </div>
+              
+              <div className="chart-wrapper">
+                <CO2IntensityChart />
+              </div>
+            </section>
+          </>
+        )}
       </main>
 
       <footer className="app-footer">
