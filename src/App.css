@@ -773,15 +773,15 @@
 .retro-summary-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .retro-stat-card {
   background-color: #000;
   border: 4px solid #00FF66;
   border-radius: 4px;
-  padding: 16px;
+  padding: 8px 4px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -793,7 +793,7 @@
   margin-top: 0;
   color: #00FFAA;
   font-size: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   text-shadow: 2px 2px #002211;
 }
 
@@ -805,7 +805,7 @@
 .retro-stat-value {
   font-size: 18px;
   font-weight: bold;
-  margin: 8px 0;
+  margin: 4px 0;
   color: #FFFF00;
   text-shadow: 2px 2px #332200;
   letter-spacing: -1px;
@@ -815,6 +815,7 @@
   font-size: 10px;
   color: #AAFFAA;
   margin: 0;
+  padding-bottom: 4px;
 }
 
 /* Retro Date Range Picker */
@@ -840,14 +841,14 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
   justify-content: center;
 }
 
 .retro-preset-label {
   font-size: 12px;
   color: #AAFFAA;
-  margin-right: 8px;
+  margin-right: 4px;
 }
 
 .retro-preset-btn {

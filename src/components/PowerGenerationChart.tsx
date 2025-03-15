@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { ensureDataParsed } from '../utils/dataUtils';
+import { Layout, Data } from 'plotly.js';
 
 const PowerGenerationChart = () => {
   const { data, isLoading } = useAppSelector(state => state.meritData);
@@ -9,7 +10,7 @@ const PowerGenerationChart = () => {
   const parsedData = useMemo(() => ensureDataParsed(data), [data]);
   
   const plotData = useMemo(() => {
-    if (!parsedData || !parsedData.timeseries_values) return [];
+    if (!parsedData || !parsedData.timeseries_values) return [] as Data[];
 
     const timeseries = parsedData.timeseries_values;
     
@@ -19,8 +20,8 @@ const PowerGenerationChart = () => {
         x: timeseries.timestamps || [],
         y: timeseries.thermal_generation || [],
         name: '🔥 THERMAL',
-        type: 'scatter',
-        mode: 'lines',
+        type: 'scatter' as const,
+        mode: 'lines' as const,
         stackgroup: 'one',
         fillcolor: '#FF5500', // Bright orange-red
       },
@@ -28,8 +29,8 @@ const PowerGenerationChart = () => {
         x: timeseries.timestamps || [],
         y: timeseries.gas_generation || [],
         name: '💨 GAS',
-        type: 'scatter',
-        mode: 'lines',
+        type: 'scatter' as const,
+        mode: 'lines' as const,
         stackgroup: 'one',
         fillcolor: '#00AAFF', // Bright blue
       },
@@ -37,8 +38,8 @@ const PowerGenerationChart = () => {
         x: timeseries.timestamps || [],
         y: timeseries.hydro_generation || [],
         name: '💧 HYDRO',
-        type: 'scatter',
-        mode: 'lines',
+        type: 'scatter' as const,
+        mode: 'lines' as const,
         stackgroup: 'one',
         fillcolor: '#0066FF', // Deep blue
       },
@@ -46,8 +47,8 @@ const PowerGenerationChart = () => {
         x: timeseries.timestamps || [],
         y: timeseries.nuclear_generation || [],
         name: '☢️ NUCLEAR',
-        type: 'scatter',
-        mode: 'lines',
+        type: 'scatter' as const,
+        mode: 'lines' as const,
         stackgroup: 'one',
         fillcolor: '#AA00FF', // Bright purple
       },
@@ -55,8 +56,8 @@ const PowerGenerationChart = () => {
         x: timeseries.timestamps || [],
         y: timeseries.renewable_generation || [],
         name: '♻️ RENEWABLE',
-        type: 'scatter',
-        mode: 'lines',
+        type: 'scatter' as const,
+        mode: 'lines' as const,
         stackgroup: 'one',
         fillcolor: '#00FF44', // Bright green
       },
@@ -64,8 +65,8 @@ const PowerGenerationChart = () => {
         x: timeseries.timestamps || [],
         y: timeseries.demand_met || [],
         name: '⚡ DEMAND',
-        type: 'scatter',
-        mode: 'lines',
+        type: 'scatter' as const,
+        mode: 'lines' as const,
         line: { color: '#FF0000', width: 3 },
       },
     ];
@@ -115,7 +116,7 @@ const PowerGenerationChart = () => {
       height: 500,
       margin: { l: 60, r: 30, b: 50, t: 80, pad: 4 },
       legend: { 
-        orientation: 'h', 
+        orientation: 'h' as const,
         y: -0.15,
         bgcolor: prefersDarkMode ? 'rgba(16, 24, 48, 0.8)' : 'rgba(204, 255, 255, 0.8)',
         bordercolor: gridColor,
@@ -132,7 +133,7 @@ const PowerGenerationChart = () => {
         family: '"Courier New", monospace',
         color: textColor
       }
-    };
+    } as Partial<Layout>;
   }, []);
 
   if (isLoading) {

@@ -36,7 +36,6 @@ const SummaryStats = () => {
   return (
     <div className="retro-summary-stats">
       <div className="retro-stat-card">
-        <div className="retro-stat-icon">⚡</div>
         <h3>PEAK DEMAND</h3>
         <div className="retro-stat-value-container">
           <p className="retro-stat-value">{maxDemand.toLocaleString()} MW</p>
@@ -45,7 +44,6 @@ const SummaryStats = () => {
       </div>
       
       <div className="retro-stat-card">
-        <div className="retro-stat-icon">▼</div>
         <h3>LOWEST DEMAND</h3>
         <div className="retro-stat-value-container">
           <p className="retro-stat-value">{minDemand.toLocaleString()} MW</p>
@@ -54,7 +52,6 @@ const SummaryStats = () => {
       </div>
       
       <div className="retro-stat-card">
-        <div className="retro-stat-icon">♨</div>
         <h3>MAX CO2 INTENSITY</h3>
         <div className="retro-stat-value-container">
           <p className="retro-stat-value">{maxCO2.toFixed(2)} g/kWh</p>
@@ -63,7 +60,6 @@ const SummaryStats = () => {
       </div>
       
       <div className="retro-stat-card">
-        <div className="retro-stat-icon">♻</div>
         <h3>MIN CO2 INTENSITY</h3>
         <div className="retro-stat-value-container">
           <p className="retro-stat-value">{parsedData.min_co2_per_kwh.toFixed(2)} g/kWh</p>
@@ -72,7 +68,6 @@ const SummaryStats = () => {
       </div>
       
       <div className="retro-stat-card wide">
-        <div className="retro-stat-icon">☢</div>
         <h3>TOTAL CO2 EMISSIONS</h3>
         <div className="retro-stat-value-container">
           <p className="retro-stat-value">{parsedData.total_tons_co2.toLocaleString()} TONS</p>

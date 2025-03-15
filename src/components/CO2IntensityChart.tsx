@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { ensureDataParsed } from '../utils/dataUtils';
+import { ScatterData } from 'plotly.js';
 
 const CO2IntensityChart = () => {
   const { data, isLoading } = useAppSelector(state => state.meritData);
@@ -21,18 +22,16 @@ const CO2IntensityChart = () => {
     const lineColor = prefersDarkMode ? '#00FF66' : '#00CC44'; // Bright retro green
     const fillColor = prefersDarkMode ? 'rgba(0, 255, 102, 0.2)' : 'rgba(0, 204, 68, 0.15)';
     
-    return [
-      {
+    return [{
         x: timeseries.timestamps || [],
         y: timeseries.g_co2_per_kwh || [],
-        type: 'scatter',
+        type: 'scatter' as const,
         mode: 'lines',
         name: 'CO2 Intensity',
-        line: { color: lineColor, width: 3}, // Stepped line for pixelated look
+        line: { color: lineColor, width: 3},
         fill: 'tozeroy',
         fillcolor: fillColor
-      }
-    ];
+    }] as ScatterData[];
   }, [parsedData]);
 
   const layout = useMemo(() => {

@@ -10,7 +10,7 @@ import AboutDeveloper from './components/AboutDeveloper'
 
 function App() {
   const dispatch = useAppDispatch();
-  const { data: meritData, isLoading, error } = useAppSelector(state => state.meritData);
+  const { isLoading, error } = useAppSelector(state => state.meritData);
   const [showAboutDev, setShowAboutDev] = useState(false);
 
   useEffect(() => {

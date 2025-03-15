@@ -98,7 +98,6 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
           applyPreset(activePreset);
         } else {
           // Otherwise just update the end time and submit
-          const now = new Date();
           const formattedStartDate = `${startDate} ${startTime}:00`;
           const formattedEndDate = `${endDate} ${endTime}:00`;
           onDateRangeChange(formattedStartDate, formattedEndDate);
