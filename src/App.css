@@ -655,3 +655,346 @@
     border-top: 5px solid #63b3ed;
   }
 }
+
+/* Retro Game Styling */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.retro-chart-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: 4px solid #000;
+  border-image: linear-gradient(to bottom right, #00FFAA, #008866) 1;
+  box-shadow: 0 0 0 4px #000, 10px 10px 0 rgba(0, 0, 0, 0.5);
+  padding: 8px;
+}
+
+.retro-loading, .retro-error {
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  text-align: center;
+  padding: 2rem;
+  background-color: #000;
+  color: #00FF66;
+  text-shadow: 2px 2px #005500;
+  border: 4px solid #00FF66;
+  animation: retro-blink 1s steps(1) infinite;
+}
+
+.retro-error {
+  background-color: #330000;
+  color: #FF0000;
+  border-color: #FF5555;
+  text-shadow: 2px 2px #550000;
+}
+
+@keyframes retro-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.chart-wrapper {
+  border: 4px solid #000;
+  image-rendering: pixelated;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0) 10px,
+    rgba(0, 0, 0, 0) 20px
+  );
+}
+
+.chart-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 10px 15px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Retro styles for the app container */
+.app {
+  font-family: 'Press Start 2P', monospace;
+  background-color: #0f0f23;
+  color: #cccccc;
+  text-shadow: 0px 1px 0px rgba(0, 255, 0, 0.2);
+  padding: 1.5rem;
+  border: 4px solid #00cc44;
+}
+
+.app-header h1 {
+  font-family: 'Press Start 2P', monospace;
+  color: #00ff66;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 #003300;
+}
+
+.app-header p {
+  font-family: 'Courier New', monospace;
+  color: #aaffaa;
+}
+
+/* Dark mode retro adjustments */
+@media (prefers-color-scheme: dark) {
+  .retro-chart-container {
+    border-image: linear-gradient(to bottom right, #00FF66, #005533) 1;
+    box-shadow: 0 0 0 4px #001100, 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+  
+  .app {
+    background-color: #111122;
+    border-color: #00FF66;
+  }
+  
+  .app-header h1 {
+    color: #00FF66;
+    text-shadow: 3px 3px 0 #003322;
+  }
+  
+  .app-header p {
+    color: #AAFFDD;
+  }
+}
+
+/* Additional retro styling for DateRangePicker, SummaryStats, and PowerGenerationChart */
+
+/* Retro Summary Stats */
+.retro-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.retro-stat-card {
+  background-color: #000;
+  border: 4px solid #00FF66;
+  border-radius: 4px;
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  color: #00FF66;
+}
+
+.retro-stat-card h3 {
+  margin-top: 0;
+  color: #00FFAA;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-shadow: 2px 2px #002211;
+}
+
+.retro-stat-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.retro-stat-value {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 8px 0;
+  color: #FFFF00;
+  text-shadow: 2px 2px #332200;
+  letter-spacing: -1px;
+}
+
+.retro-stat-time {
+  font-size: 10px;
+  color: #AAFFAA;
+  margin: 0;
+}
+
+/* Retro Date Range Picker */
+.retro-date-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  color: #00FF66;
+}
+
+.retro-preset-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+  background-color: #000;
+  border: 4px solid #00FF66;
+  padding: 12px;
+}
+
+.retro-preset-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.retro-preset-label {
+  font-size: 12px;
+  color: #AAFFAA;
+  margin-right: 8px;
+}
+
+.retro-preset-btn {
+  padding: 8px 12px;
+  background-color: #002211;
+  border: 2px solid #00FF66;
+  font-size: 12px;
+  font-weight: bold;
+  color: #00FF66;
+  cursor: pointer;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  text-shadow: 1px 1px #000;
+}
+
+.retro-preset-btn:hover {
+  background-color: #004422;
+}
+
+.retro-preset-btn.retro-active {
+  background-color: #00FF66;
+  color: #000;
+  text-shadow: none;
+}
+
+.retro-date-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  border: 4px solid #00FF66;
+  padding: 16px;
+}
+
+.retro-form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.retro-form-group label {
+  font-weight: bold;
+  color: #00FF66;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.retro-date-input, .retro-time-input {
+  padding: 8px;
+  background-color: #001100;
+  border: 2px solid #00FF66;
+  color: #00FF66;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.retro-date-input:focus, .retro-time-input:focus {
+  outline: none;
+  border-color: #FFFF00;
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.3);
+}
+
+.retro-checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.retro-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #00FF66;
+  margin-right: 8px;
+  position: relative;
+  cursor: pointer;
+  background-color: #001100;
+}
+
+.retro-checkbox:checked {
+  background-color: #00FF66;
+}
+
+.retro-checkbox:checked::after {
+  content: "×";
+  font-size: 16px;
+  color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.retro-label {
+  font-size: 10px;
+  color: #00FF66;
+}
+
+.retro-submit-btn {
+  padding: 12px 20px;
+  background-color: #004422;
+  color: #00FF66;
+  border: 2px solid #00FF66;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  text-shadow: 1px 1px #000;
+}
+
+.retro-submit-btn:hover {
+  background-color: #006633;
+}
+
+.retro-update-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #00FF66;
+  padding: 8px;
+  background-color: #001100;
+  border: 2px solid #00FF66;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.retro-update-icon {
+  animation: retro-spin 2s steps(4) infinite;
+  display: inline-block;
+}
+
+@keyframes retro-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .retro-stat-card {
+    background-color: #111122;
+    border-color: #00FF66;
+  }
+  
+  .retro-preset-buttons,
+  .retro-date-form {
+    background-color: #111122;
+    border-color: #00FF66;
+  }
+  
+  .retro-date-input, .retro-time-input,
+  .retro-checkbox {
+    background-color: #223344;
+  }
+}

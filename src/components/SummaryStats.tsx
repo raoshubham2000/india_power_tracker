@@ -1,13 +1,19 @@
 import { useAppSelector } from '../hooks/reduxHooks';
+import { useMemo } from 'react';
+import { ensureDataParsed } from '../utils/dataUtils';
 
 const SummaryStats = () => {
-  const { data } = useAppSelector(state => state.meritData);
+  const { data, isLoading } = useAppSelector(state => state.meritData);
   
   // Parse data if needed
-  const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+  const parsedData = useMemo(() => ensureDataParsed(data), [data]);
+  
+  if (isLoading) {
+    return <div className="retro-loading">LOADING STATS...</div>;
+  }
   
   if (!parsedData) {
-    return null;
+    return <div className="retro-error">NO STATS AVAILABLE</div>;
   }
 
   // Ensure arrays exist before trying to use them
@@ -28,49 +34,49 @@ const SummaryStats = () => {
   const maxCO2 = parsedData.max_co2_per_kwh || 0;
 
   return (
-    <div className="summary-stats">
-      <div className="stat-card">
-        <div className="stat-icon">⚡</div>
-        <h3>Peak Demand</h3>
-        <div className="stat-value-container">
-          <p className="stat-value">{maxDemand.toLocaleString()} MW</p>
-          <p className="stat-time">at {peakTime}</p>
+    <div className="retro-summary-stats">
+      <div className="retro-stat-card">
+        <div className="retro-stat-icon">⚡</div>
+        <h3>PEAK DEMAND</h3>
+        <div className="retro-stat-value-container">
+          <p className="retro-stat-value">{maxDemand.toLocaleString()} MW</p>
+          <p className="retro-stat-time">AT {peakTime}</p>
         </div>
       </div>
       
-      <div className="stat-card">
-        <div className="stat-icon">📉</div>
-        <h3>Lowest Demand</h3>
-        <div className="stat-value-container">
-          <p className="stat-value">{minDemand.toLocaleString()} MW</p>
-          <p className="stat-time">at {troughTime}</p>
+      <div className="retro-stat-card">
+        <div className="retro-stat-icon">▼</div>
+        <h3>LOWEST DEMAND</h3>
+        <div className="retro-stat-value-container">
+          <p className="retro-stat-value">{minDemand.toLocaleString()} MW</p>
+          <p className="retro-stat-time">AT {troughTime}</p>
         </div>
       </div>
       
-      <div className="stat-card">
-        <div className="stat-icon">🔥</div>
-        <h3>Max CO2 Intensity</h3>
-        <div className="stat-value-container">
-          <p className="stat-value">{maxCO2.toFixed(2)} g/kWh</p>
-          <p className="stat-time">at {new Date(parsedData.max_co2_per_kwh_time).toLocaleString()}</p>
+      <div className="retro-stat-card">
+        <div className="retro-stat-icon">♨</div>
+        <h3>MAX CO2 INTENSITY</h3>
+        <div className="retro-stat-value-container">
+          <p className="retro-stat-value">{maxCO2.toFixed(2)} g/kWh</p>
+          <p className="retro-stat-time">AT {new Date(parsedData.max_co2_per_kwh_time).toLocaleString()}</p>
         </div>
       </div>
       
-      <div className="stat-card">
-        <div className="stat-icon">🌱</div>
-        <h3>Min CO2 Intensity</h3>
-        <div className="stat-value-container">
-          <p className="stat-value">{parsedData.min_co2_per_kwh.toFixed(2)} g/kWh</p>
-          <p className="stat-time">at {new Date(parsedData.min_co2_per_kwh_time).toLocaleString()}</p>
+      <div className="retro-stat-card">
+        <div className="retro-stat-icon">♻</div>
+        <h3>MIN CO2 INTENSITY</h3>
+        <div className="retro-stat-value-container">
+          <p className="retro-stat-value">{parsedData.min_co2_per_kwh.toFixed(2)} g/kWh</p>
+          <p className="retro-stat-time">AT {new Date(parsedData.min_co2_per_kwh_time).toLocaleString()}</p>
         </div>
       </div>
       
-      <div className="stat-card wide">
-        <div className="stat-icon total-icon">🌍</div>
-        <h3>Total CO2 Emissions</h3>
-        <div className="stat-value-container">
-          <p className="stat-value">{parsedData.total_tons_co2.toLocaleString()} tons</p>
-          <p className="stat-time">during selected period</p>
+      <div className="retro-stat-card wide">
+        <div className="retro-stat-icon">☢</div>
+        <h3>TOTAL CO2 EMISSIONS</h3>
+        <div className="retro-stat-value-container">
+          <p className="retro-stat-value">{parsedData.total_tons_co2.toLocaleString()} TONS</p>
+          <p className="retro-stat-time">DURING SELECTED PERIOD</p>
         </div>
       </div>
     </div>

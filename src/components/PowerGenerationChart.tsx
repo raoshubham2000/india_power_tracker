@@ -13,111 +13,138 @@ const PowerGenerationChart = () => {
 
     const timeseries = parsedData.timeseries_values;
     
+    // Retro game color palette with icons
     return [
       {
         x: timeseries.timestamps || [],
         y: timeseries.thermal_generation || [],
-        name: 'Thermal',
+        name: '🔥 THERMAL',
         type: 'scatter',
         mode: 'lines',
         stackgroup: 'one',
-        fillcolor: '#FF8C00',
+        fillcolor: '#FF5500', // Bright orange-red
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.gas_generation || [],
-        name: 'Gas',
+        name: '💨 GAS',
         type: 'scatter',
         mode: 'lines',
         stackgroup: 'one',
-        fillcolor: '#4682B4',
+        fillcolor: '#00AAFF', // Bright blue
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.hydro_generation || [],
-        name: 'Hydro',
+        name: '💧 HYDRO',
         type: 'scatter',
         mode: 'lines',
         stackgroup: 'one',
-        fillcolor: '#1E90FF',
+        fillcolor: '#0066FF', // Deep blue
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.nuclear_generation || [],
-        name: 'Nuclear',
+        name: '☢️ NUCLEAR',
         type: 'scatter',
         mode: 'lines',
         stackgroup: 'one',
-        fillcolor: '#9370DB',
+        fillcolor: '#AA00FF', // Bright purple
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.renewable_generation || [],
-        name: 'Renewable',
+        name: '♻️ RENEWABLE',
         type: 'scatter',
         mode: 'lines',
         stackgroup: 'one',
-        fillcolor: '#32CD32',
+        fillcolor: '#00FF44', // Bright green
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.demand_met || [],
-        name: 'Demand',
+        name: '⚡ DEMAND',
         type: 'scatter',
         mode: 'lines',
-        line: { color: '#FF0000', width: 2 },
+        line: { color: '#FF0000', width: 3 },
       },
     ];
   }, [parsedData]);
 
-  const layout = {
-    title: {
-      text: 'Power Generation and Demand',
-      font: {
-        size: 20,
-        color: '#2d3748',
-        family: 'Inter, system-ui, sans-serif'
+  const layout = useMemo(() => {
+    // Check if dark mode is enabled
+    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Retro game color palette
+    const bgColor = prefersDarkMode ? '#111122' : '#CCFFFF';
+    const gridColor = prefersDarkMode ? '#334455' : '#88AAAA';
+    const textColor = prefersDarkMode ? '#00FFAA' : '#227722';
+    const titleColor = prefersDarkMode ? '#00FF66' : '#005500';
+    
+    return {
+      title: {
+        text: 'POWER GENERATION TRACKER',
+        font: {
+          size: 24,
+          color: titleColor,
+          family: '"Press Start 2P", "Courier New", monospace'
+        },
+        y: 0.95
       },
-      y: 0.95
-    },
-    xaxis: { 
-      title: 'Time',
-      gridcolor: '#e2e8f0',
-      linecolor: '#e2e8f0',
-    },
-    yaxis: { 
-      title: 'Power (MW)',
-      gridcolor: '#e2e8f0',
-      linecolor: '#e2e8f0',
-    },
-    autosize: true,
-    height: 500,
-    margin: { l: 60, r: 30, b: 50, t: 80, pad: 4 },
-    legend: { 
-      orientation: 'h', 
-      y: -0.15,
-      bgcolor: 'rgba(255, 255, 255, 0.8)',
-      bordercolor: '#e2e8f0',
-      borderwidth: 1,
-      borderradius: 4
-    },
-    plot_bgcolor: 'rgba(255, 255, 255, 0)',
-    paper_bgcolor: 'rgba(255, 255, 255, 0)',
-    font: {
-      family: 'Inter, system-ui, sans-serif'
-    }
-  };
+      xaxis: { 
+        title: 'TIME',
+        gridcolor: gridColor,
+        linecolor: gridColor,
+        color: textColor,
+        tickfont: {
+          family: '"Courier New", monospace',
+          size: 12
+        }
+      },
+      yaxis: { 
+        title: 'POWER (MW)',
+        gridcolor: gridColor,
+        linecolor: gridColor,
+        color: textColor,
+        tickfont: {
+          family: '"Courier New", monospace',
+          size: 12
+        }
+      },
+      autosize: true,
+      height: 500,
+      margin: { l: 60, r: 30, b: 50, t: 80, pad: 4 },
+      legend: { 
+        orientation: 'h', 
+        y: -0.15,
+        bgcolor: prefersDarkMode ? 'rgba(16, 24, 48, 0.8)' : 'rgba(204, 255, 255, 0.8)',
+        bordercolor: gridColor,
+        borderwidth: 2,
+        font: {
+          family: '"Courier New", monospace',
+          size: 12,
+          color: textColor
+        }
+      },
+      plot_bgcolor: bgColor,
+      paper_bgcolor: bgColor,
+      font: {
+        family: '"Courier New", monospace',
+        color: textColor
+      }
+    };
+  }, []);
 
   if (isLoading) {
-    return <div className="loading">Loading data...</div>;
+    return <div className="retro-loading">LOADING DATA...</div>;
   }
 
   if (!parsedData || !parsedData.timeseries_values) {
-    return <div className="error">No data available</div>;
+    return <div className="retro-error">NO DATA AVAILABLE</div>;
   }
 
   return (
-    <div className="chart-container">
+    <div className="retro-chart-container">
       <Plot
         data={plotData}
         layout={layout}

@@ -145,80 +145,80 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
   };
 
   return (
-    <div className="date-range-picker-container">
-      <div className="preset-buttons">
-        <div className="preset-group">
-          <span className="preset-label">Quick select:</span>
+    <div className="retro-date-picker-container">
+      <div className="retro-preset-buttons">
+        <div className="retro-preset-group">
+          <span className="retro-preset-label">QUICK SELECT:</span>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '1h' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '1h' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('1h')}
           >
-            1h
+            1H
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '6h' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '6h' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('6h')}
           >
-            6h
+            6H
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '12h' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '12h' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('12h')}
           >
-            12h
+            12H
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '1d' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '1d' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('1d')}
           >
-            1d
+            1D
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '7d' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '7d' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('7d')}
           >
-            7d
+            7D
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '14d' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '14d' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('14d')}
           >
-            14d
+            14D
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '1m' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '1m' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('1m')}
           >
-            1m
+            1M
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '6m' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '6m' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('6m')}
           >
-            6m
+            6M
           </button>
           <button 
             type="button" 
-            className={`preset-btn ${activePreset === '1y' ? 'active' : ''}`}
+            className={`retro-preset-btn ${activePreset === '1y' ? 'retro-active' : ''}`}
             onClick={() => applyPreset('1y')}
           >
-            1y
+            1Y
           </button>
         </div>
       </div>
       
-      <form className="date-range-form" onSubmit={handleSubmit}>
-        <div className="form-group">
+      <form className="retro-date-form" onSubmit={handleSubmit}>
+        <div className="retro-form-group">
           <label htmlFor="start-date">
-            <span className="date-icon">📅</span> Start Date:
+            <span className="retro-date-icon">[&gt;</span> START:
           </label>
           <input
             type="date"
@@ -228,7 +228,7 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setStartDate(e.target.value);
               setActivePreset(null);
             }}
-            className="date-input"
+            className="retro-date-input"
           />
           <input
             type="time"
@@ -238,13 +238,13 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setStartTime(e.target.value);
               setActivePreset(null);
             }}
-            className="time-input"
+            className="retro-time-input"
           />
         </div>
         
-        <div className="form-group">
+        <div className="retro-form-group">
           <label htmlFor="end-date">
-            <span className="date-icon">📅</span> End Date:
+            <span className="retro-date-icon">[&gt;</span> END:
           </label>
           <input
             type="date"
@@ -254,7 +254,7 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setEndDate(e.target.value);
               setActivePreset(null);
             }}
-            className="date-input"
+            className="retro-date-input"
             disabled={useCurrentTime}
           />
           <input
@@ -265,29 +265,29 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setEndTime(e.target.value);
               setActivePreset(null);
             }}
-            className="time-input"
+            className="retro-time-input"
             disabled={useCurrentTime}
           />
-          <div className="now-checkbox-container">
+          <div className="retro-checkbox-container">
             <input
               type="checkbox"
               id="use-current-time"
               checked={useCurrentTime}
               onChange={handleUseCurrentTimeChange}
-              className="now-checkbox"
+              className="retro-checkbox"
             />
-            <label htmlFor="use-current-time" className="now-label">Use current time</label>
+            <label htmlFor="use-current-time" className="retro-label">CURRENT TIME</label>
           </div>
         </div>
         
-        <button type="submit" className="submit-btn">
-          <span className="btn-icon">↻</span> Update Data
+        <button type="submit" className="retro-submit-btn">
+          <span className="retro-btn-icon">►</span> UPDATE
         </button>
       </form>
       
       {useCurrentTime && activePreset && (
-        <div className="auto-update-notice">
-          <span className="update-icon">🔄</span> Auto-updating every minute
+        <div className="retro-update-notice">
+          <span className="retro-update-icon">↻</span> AUTO-UPDATING EVERY MINUTE
         </div>
       )}
     </div>
