@@ -71,3 +71,68 @@ html[data-theme='dark'] .form-group input {
 html[data-theme='dark'] .chart-wrapper {
   background-color: #333;
 }
+
+/* Header brand — title + tagline (see App.tsx .nav-brand) */
+.app-navbar .nav-brand {
+  align-items: stretch;
+}
+
+.app-navbar .nav-brand-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.12rem;
+  min-height: 1.65rem;
+}
+
+.app-navbar .nav-brand-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: #0f172a;
+  background: linear-gradient(105deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app-navbar .nav-brand-tagline {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+  max-width: 14rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-theme='dark'] .app-navbar .nav-brand-title {
+  background: linear-gradient(105deg, #f8fafc 0%, #cbd5e1 45%, #f1f5f9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+html[data-theme='dark'] .app-navbar .nav-brand-tagline {
+  color: #94a3b8;
+}
+
+@media (max-width: 480px) {
+  .app-navbar .nav-brand-title {
+    font-size: 1.05rem;
+  }
+
+  .app-navbar .nav-brand-tagline {
+    display: none;
+  }
+
+  .app-navbar .nav-brand-copy {
+    min-height: 0;
+    justify-content: center;
+  }
+}

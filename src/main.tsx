@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { store } from './store'
 import { ThemeProvider } from './context/ThemeContext'
 import './index.css'
+import './bones/registry.js'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(

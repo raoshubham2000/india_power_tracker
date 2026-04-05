@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
 import './App.css'
 import { useTheme } from './context/ThemeContext'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
@@ -7,12 +8,13 @@ import PowerGenerationChart from './components/PowerGenerationChart'
 import CO2IntensityChart from './components/CO2IntensityChart'
 import SummaryStats from './components/SummaryStats'
 import DateRangePicker from './components/DateRangePicker'
+import ExportDownloadMenu from './components/ExportDownloadMenu'
 import AboutDeveloper from './components/AboutDeveloper'
 
 function App() {
   const dispatch = useAppDispatch();
   const { resolvedTheme, toggleTheme } = useTheme();
-  const { isLoading, error } = useAppSelector(state => state.meritData);
+  const { error } = useAppSelector(state => state.meritData);
   const [showAboutDev, setShowAboutDev] = useState(false);
 
   useEffect(() => {
@@ -38,20 +40,16 @@ function App() {
   };
 
   return (
-    <div className={`app redux-container${showAboutDev ? '' : ' app--dashboard'}`}>
-      {isLoading && (
-        <div className="redux-loading-overlay" aria-busy="true" aria-live="polite">
-          <div className="redux-loading-inner">
-            <div className="redux-loading-spinner" />
-            <p className="redux-loading-label">Loading data…</p>
-          </div>
-        </div>
-      )}
-
+    <div className={`app${showAboutDev ? '' : ' app--dashboard'}`}>
       <header className="app-navbar">
         <div className="app-navbar-shell">
           <div className="app-navbar-inner">
-            <span className="nav-brand">Power Tracker</span>
+            <span className="nav-brand">
+              <span className="nav-brand-copy">
+                <span className="nav-brand-title">Power Tracker</span>
+                <span className="nav-brand-tagline">India grid · MERIT &amp; CO₂</span>
+              </span>
+            </span>
             <nav className="nav-actions" aria-label="Primary">
               <div className="nav-btn-container">
                 <button
@@ -69,6 +67,7 @@ function App() {
                   About
                 </button>
               </div>
+              {!showAboutDev && <ExportDownloadMenu />}
               <button
                 type="button"
                 className="theme-toggle"
@@ -76,9 +75,11 @@ function App() {
                 aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                 title={resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
               >
-                <span className="theme-toggle-icon" aria-hidden>
-                  {resolvedTheme === 'dark' ? '☀️' : '🌙'}
-                </span>
+                {resolvedTheme === 'dark' ? (
+                  <Sun className="theme-toggle-icon" aria-hidden size={20} strokeWidth={2} />
+                ) : (
+                  <Moon className="theme-toggle-icon" aria-hidden size={20} strokeWidth={2} />
+                )}
               </button>
             </nav>
           </div>
@@ -112,9 +113,11 @@ function App() {
                 </div>
 
                 <aside className="dashboard-summary" aria-label="Period summary">
-                  <section className="stats-section">
-                    <SummaryStats />
-                  </section>
+                  <div className="dashboard-summary-inner">
+                    <section className="stats-section">
+                      <SummaryStats />
+                    </section>
+                  </div>
                 </aside>
               </div>
             </>

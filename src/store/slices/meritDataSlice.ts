@@ -6,12 +6,15 @@ interface MeritDataState {
   data: MeritData | null;
   isLoading: boolean;
   error: string | null;
+  /** Range from the last successful fetch (for export filenames). */
+  lastRequestedRange: { startTime: string; endTime: string } | null;
 }
 
 const initialState: MeritDataState = {
   data: null,
   isLoading: false,
   error: null,
+  lastRequestedRange: null,
 };
 
 export type FetchMeritParams = {
@@ -44,6 +47,12 @@ const meritDataSlice = createSlice({
       .addCase(fetchMeritDataAsync.fulfilled, (state, action: PayloadAction<MeritData>) => {
         state.isLoading = false;
         state.data = action.payload;
+        const arg = (action as PayloadAction<MeritData> & { meta: { arg: FetchMeritParams } }).meta
+          .arg;
+        state.lastRequestedRange = {
+          startTime: arg.startTime,
+          endTime: arg.endTime,
+        };
       })
       .addCase(fetchMeritDataAsync.rejected, (state, action) => {
         state.isLoading = false;

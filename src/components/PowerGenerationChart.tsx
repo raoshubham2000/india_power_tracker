@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import Plot from 'react-plotly.js';
+import { Skeleton } from 'boneyard-js/react';
 import { useAppSelector } from '../hooks/reduxHooks';
 import { useTheme } from '../context/ThemeContext';
 import { usePlotContainerSize } from '../hooks/usePlotContainerSize';
 import { ensureDataParsed } from '../utils/dataUtils';
 import { Layout, Data } from 'plotly.js';
+import ChartSkeleton from './ChartSkeleton';
 
 const CHART_FONT = '"Inter", "Segoe UI", system-ui, sans-serif';
 
@@ -104,6 +106,7 @@ const PowerGenerationChart = () => {
         y: 0.98,
         x: 0,
         xanchor: 'left' as const,
+        pad: { r: 16 },
       },
       xaxis: {
         title: { text: 'Time', font: { family: CHART_FONT, size: 12, color: textColor } },
@@ -138,27 +141,47 @@ const PowerGenerationChart = () => {
       plot_bgcolor: plotBg,
       paper_bgcolor: paperBg,
       font: { family: CHART_FONT, color: textColor },
+      hovermode: 'x unified' as const,
+      hoverlabel: {
+        bgcolor: prefersDarkMode ? '#1e293b' : '#ffffff',
+        bordercolor: gridColor,
+        font: { family: CHART_FONT, size: 12, color: textColor },
+      },
     } as Partial<Layout>;
   }, [cw, ch, resolvedTheme]);
 
+  const plotReady =
+    !isLoading && !!parsedData?.timeseries_values && cw > 0 && ch > 0;
+
   return (
     <div className="chart-container" ref={plotRef}>
-      {isLoading ? (
-        <p className="loading">Loading chart…</p>
-      ) : !parsedData?.timeseries_values ? (
+      {!isLoading && !parsedData?.timeseries_values ? (
         <p className="error">No data available for this range.</p>
-      ) : cw > 0 && ch > 0 ? (
-        <Plot
-          data={plotData}
-          layout={layout}
-          useResizeHandler={true}
-          style={{ width: '100%', height: '100%' }}
-          config={{
-            responsive: true,
-            displayModeBar: false,
-          }}
-        />
-      ) : null}
+      ) : (
+        <Skeleton
+          name="power-generation-chart"
+          loading={isLoading}
+          className={`chart-skeleton-host${resolvedTheme === 'dark' ? ' dark' : ''}`}
+          animate="shimmer"
+          fallback={<ChartSkeleton />}
+          fixture={<ChartSkeleton />}
+        >
+          {plotReady ? (
+            <Plot
+              data={plotData}
+              layout={layout}
+              useResizeHandler={true}
+              style={{ width: '100%', height: '100%' }}
+              config={{
+                responsive: true,
+                displayModeBar: false,
+              }}
+            />
+          ) : (
+            <div className="chart-skeleton-measure" aria-hidden />
+          )}
+        </Skeleton>
+      )}
     </div>
   );
 };

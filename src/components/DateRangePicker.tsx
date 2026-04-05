@@ -297,15 +297,6 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
           </button>
         </div>
       </div>
-
-      {useCurrentTime && activePreset && (
-        <div className="auto-update-notice">
-          <span className="update-icon" aria-hidden>
-            ↻
-          </span>
-          Auto-updating every minute
-        </div>
-      )}
     </div>
   );
 };

@@ -7,19 +7,23 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "bones:build": "boneyard-js build http://localhost:5173/india_power_tracker/ --wait 3000"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
     "@types/plotly.js": "^2.35.2",
     "axios": "^1.8.1",
+    "boneyard-js": "^1.6.2",
     "date-fns": "^4.1.0",
+    "lucide-react": "^1.7.0",
     "plotly.js": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-plotly.js": "^2.6.0",
     "react-redux": "^9.2.0",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
