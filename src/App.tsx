@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { useTheme } from './context/ThemeContext'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 import { fetchMeritDataAsync } from './store/slices/meritDataSlice'
 import PowerGenerationChart from './components/PowerGenerationChart'
@@ -10,6 +11,7 @@ import AboutDeveloper from './components/AboutDeveloper'
 
 function App() {
   const dispatch = useAppDispatch();
+  const { resolvedTheme, toggleTheme } = useTheme();
   const { isLoading, error } = useAppSelector(state => state.meritData);
   const [showAboutDev, setShowAboutDev] = useState(false);
 
@@ -21,68 +23,109 @@ function App() {
     }));
   }, [dispatch]);
 
-  const handleDateRangeChange = (startDate: string, endDate: string) => {
-    dispatch(fetchMeritDataAsync({ startTime: startDate, endTime: endDate }));
-  }
+  const handleDateRangeChange = (
+    startDate: string,
+    endDate: string,
+    options?: { silent?: boolean }
+  ) => {
+    dispatch(
+      fetchMeritDataAsync({
+        startTime: startDate,
+        endTime: endDate,
+        silent: options?.silent,
+      })
+    );
+  };
 
   return (
-    <div className="app redux-container">
+    <div className={`app redux-container${showAboutDev ? '' : ' app--dashboard'}`}>
       {isLoading && (
-        <div className="retro-loading-overlay">
-          <div className="retro-loading">LOADING DATA<span className="retro-loading-dots">...</span></div>
+        <div className="redux-loading-overlay" aria-busy="true" aria-live="polite">
+          <div className="redux-loading-inner">
+            <div className="redux-loading-spinner" />
+            <p className="redux-loading-label">Loading data…</p>
+          </div>
         </div>
       )}
-      
-      <nav className="app-nav">
-        <div className="nav-title">POWER TRACKER</div>
-        <div className="nav-btn-container">
-          <button 
-            className={`nav-btn ${!showAboutDev ? 'active' : ''}`} 
-            onClick={() => setShowAboutDev(false)}
-          >
-            DASHBOARD
-          </button>
-          <button 
-            className={`nav-btn ${showAboutDev ? 'active' : ''}`} 
-            onClick={() => setShowAboutDev(true)}
-          >
-            ABOUT DEV
-          </button>
-        </div>
-      </nav>
 
-      <main className="app-content">
-        {showAboutDev ? (
-          <AboutDeveloper />
-        ) : (
-          <>
-            <section className="controls-section">
+      <header className="app-navbar">
+        <div className="app-navbar-shell">
+          <div className="app-navbar-inner">
+            <span className="nav-brand">Power Tracker</span>
+            <nav className="nav-actions" aria-label="Primary">
+              <div className="nav-btn-container">
+                <button
+                  type="button"
+                  className={`nav-btn ${!showAboutDev ? 'active' : ''}`}
+                  onClick={() => setShowAboutDev(false)}
+                >
+                  Dashboard
+                </button>
+                <button
+                  type="button"
+                  className={`nav-btn ${showAboutDev ? 'active' : ''}`}
+                  onClick={() => setShowAboutDev(true)}
+                >
+                  About
+                </button>
+              </div>
+              <button
+                type="button"
+                className="theme-toggle"
+                onClick={toggleTheme}
+                aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
+              >
+                <span className="theme-toggle-icon" aria-hidden>
+                  {resolvedTheme === 'dark' ? '☀️' : '🌙'}
+                </span>
+              </button>
+            </nav>
+          </div>
+          {!showAboutDev && (
+            <div className="app-navbar-dates" aria-label="Date range">
               <DateRangePicker onDateRangeChange={handleDateRangeChange} />
-            </section>
+            </div>
+          )}
+        </div>
+      </header>
 
-            {error && <div className="error-message">{error}</div>}
+      <div className={`app-body${showAboutDev ? '' : ' app-body--dashboard'}`}>
+        <main className="app-content">
+          {showAboutDev ? (
+            <AboutDeveloper />
+          ) : (
+            <>
+              {error && <div className="error-message">{error}</div>}
 
-            <section className="stats-section">
-              <SummaryStats />
-            </section>
+              <div className="dashboard-layout">
+                <div className="dashboard-charts">
+                  <section className="charts-section">
+                    <div className="chart-wrapper">
+                      <PowerGenerationChart />
+                    </div>
 
-            <section className="charts-section">
-              <div className="chart-wrapper">
-                <PowerGenerationChart />
+                    <div className="chart-wrapper">
+                      <CO2IntensityChart />
+                    </div>
+                  </section>
+                </div>
+
+                <aside className="dashboard-summary" aria-label="Period summary">
+                  <section className="stats-section">
+                    <SummaryStats />
+                  </section>
+                </aside>
               </div>
-              
-              <div className="chart-wrapper">
-                <CO2IntensityChart />
-              </div>
-            </section>
-          </>
-        )}
-      </main>
+            </>
+          )}
+        </main>
 
-      <footer className="app-footer">
-        <p>Power Tracker by Shubham Rao © 2025</p>
-        <p>Source: Underlying Data from MERIT India & The CSEP Electricity and Carbon Tracker.</p>
-      </footer>
+        <footer className="app-footer">
+          <p>Power Tracker by Shubham Rao © 2025</p>
+          <p>Source: Underlying Data from MERIT India & The CSEP Electricity and Carbon Tracker.</p>
+        </footer>
+      </div>
     </div>
   )
 }

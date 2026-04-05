@@ -1,7 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 
 interface DateRangePickerProps {
-  onDateRangeChange: (startDate: string, endDate: string) => void;
+  onDateRangeChange: (
+    startDate: string,
+    endDate: string,
+    options?: { silent?: boolean }
+  ) => void;
+}
+
+function formatLocalDateTime(d: Date) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return `${y}-${m}-${day} ${h}:${min}:00`;
 }
 
 const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
@@ -13,7 +26,7 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
   const [activePreset, setActivePreset] = useState<string | null>(null);
 
   // Calculate date range based on preset
-  const applyPreset = useCallback((preset: string) => {
+  const applyPreset = useCallback((preset: string, options?: { silent?: boolean }) => {
     setActivePreset(preset);
     const now = new Date();
     let startDateTime = new Date(now);
@@ -80,7 +93,11 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
     // Submit the date range
     const formattedStartDate = `${formatDate(startDateTime)} ${formatTime(startDateTime)}:00`;
     const formattedEndDate = `${formatDate(now)} ${formatTime(now)}:00`;
-    onDateRangeChange(formattedStartDate, formattedEndDate);
+    onDateRangeChange(
+      formattedStartDate,
+      formattedEndDate,
+      options?.silent ? { silent: true } : undefined
+    );
   }, [onDateRangeChange]);
 
   // Set up polling when using current time
@@ -88,25 +105,24 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
     if (useCurrentTime) {
       // Initial update
       setCurrentDateTime();
-      
+
       // Set up polling every 60 seconds
       const interval = setInterval(() => {
         setCurrentDateTime();
-        
+
         // If we have an active preset, reapply it to maintain the relative time range
         if (activePreset) {
-          applyPreset(activePreset);
+          applyPreset(activePreset, { silent: true });
         } else {
-          // Otherwise just update the end time and submit
           const formattedStartDate = `${startDate} ${startTime}:00`;
-          const formattedEndDate = `${endDate} ${endTime}:00`;
-          onDateRangeChange(formattedStartDate, formattedEndDate);
+          const formattedEndDate = formatLocalDateTime(new Date());
+          onDateRangeChange(formattedStartDate, formattedEndDate, { silent: true });
         }
       }, 60000); // 60 seconds
-      
+
       return () => clearInterval(interval);
     }
-  }, [useCurrentTime, activePreset, applyPreset, startDate, startTime, endDate, endTime, onDateRangeChange]);
+  }, [useCurrentTime, activePreset, applyPreset, startDate, startTime, onDateRangeChange]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -144,12 +160,10 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
   };
 
   return (
-    <div className="retro-date-picker-container">
-      <form className="retro-date-form" onSubmit={handleSubmit}>
-        <div className="retro-form-group">
-          <label htmlFor="start-date">
-            <span className="retro-date-icon">[&gt;</span> START:
-          </label>
+    <div className="date-range-picker-container">
+      <form className="date-range-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="start-date">Start</label>
           <input
             type="date"
             id="start-date"
@@ -158,7 +172,7 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setStartDate(e.target.value);
               setActivePreset(null);
             }}
-            className="retro-date-input"
+            className="date-input"
           />
           <input
             type="time"
@@ -168,14 +182,12 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setStartTime(e.target.value);
               setActivePreset(null);
             }}
-            className="retro-time-input"
+            className="time-input"
           />
         </div>
-        
-        <div className="retro-form-group">
-          <label htmlFor="end-date">
-            <span className="retro-date-icon">[&gt;</span> END:
-          </label>
+
+        <div className="form-group">
+          <label htmlFor="end-date">End</label>
           <input
             type="date"
             id="end-date"
@@ -184,7 +196,7 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setEndDate(e.target.value);
               setActivePreset(null);
             }}
-            className="retro-date-input"
+            className="date-input"
             disabled={useCurrentTime}
           />
           <input
@@ -195,98 +207,103 @@ const DateRangePicker = ({ onDateRangeChange }: DateRangePickerProps) => {
               setEndTime(e.target.value);
               setActivePreset(null);
             }}
-            className="retro-time-input"
+            className="time-input"
             disabled={useCurrentTime}
           />
-          <div className="retro-checkbox-container">
+          <div className="now-checkbox-container">
             <input
               type="checkbox"
               id="use-current-time"
               checked={useCurrentTime}
               onChange={handleUseCurrentTimeChange}
-              className="retro-checkbox"
+              className="now-checkbox"
             />
-            <label htmlFor="use-current-time" className="retro-label">CURRENT TIME</label>
+            <label htmlFor="use-current-time" className="now-label">
+              Use current time for end
+            </label>
           </div>
         </div>
-        
-        <button type="submit" className="retro-submit-btn">
-          <span className="retro-btn-icon">►</span> UPDATE
+
+        <button type="submit" className="submit-btn">
+          Update range
         </button>
       </form>
-      
-      <div className="retro-preset-buttons">
-        <div className="retro-preset-group">
-          <span className="retro-preset-label">QUICK SELECT:</span>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1h' ? 'retro-active' : ''}`}
+
+      <div className="preset-buttons">
+        <div className="preset-group">
+          <span className="preset-label">Quick select</span>
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '1h' ? 'active' : ''}`}
             onClick={() => applyPreset('1h')}
           >
-            1H
+            1h
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '6h' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '6h' ? 'active' : ''}`}
             onClick={() => applyPreset('6h')}
           >
-            6H
+            6h
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '12h' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '12h' ? 'active' : ''}`}
             onClick={() => applyPreset('12h')}
           >
-            12H
+            12h
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1d' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '1d' ? 'active' : ''}`}
             onClick={() => applyPreset('1d')}
           >
-            1D
+            1d
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '7d' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '7d' ? 'active' : ''}`}
             onClick={() => applyPreset('7d')}
           >
-            7D
+            7d
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '14d' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '14d' ? 'active' : ''}`}
             onClick={() => applyPreset('14d')}
           >
-            14D
+            14d
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1m' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '1m' ? 'active' : ''}`}
             onClick={() => applyPreset('1m')}
           >
-            1M
+            1m
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '6m' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '6m' ? 'active' : ''}`}
             onClick={() => applyPreset('6m')}
           >
-            6M
+            6m
           </button>
-          <button 
-            type="button" 
-            className={`retro-preset-btn ${activePreset === '1y' ? 'retro-active' : ''}`}
+          <button
+            type="button"
+            className={`preset-btn ${activePreset === '1y' ? 'active' : ''}`}
             onClick={() => applyPreset('1y')}
           >
-            1Y
+            1y
           </button>
         </div>
       </div>
-      
+
       {useCurrentTime && activePreset && (
-        <div className="retro-update-notice">
-          <span className="retro-update-icon">↻</span> AUTO-UPDATING EVERY MINUTE
+        <div className="auto-update-notice">
+          <span className="update-icon" aria-hidden>
+            ↻
+          </span>
+          Auto-updating every minute
         </div>
       )}
     </div>

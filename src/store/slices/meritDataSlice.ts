@@ -14,9 +14,16 @@ const initialState: MeritDataState = {
   error: null,
 };
 
+export type FetchMeritParams = {
+  startTime: string;
+  endTime: string;
+  /** When true, skip global loading state so charts update in place (e.g. minute polling). */
+  silent?: boolean;
+};
+
 export const fetchMeritDataAsync = createAsyncThunk(
   'meritData/fetchMeritData',
-  async ({ startTime, endTime }: { startTime: string; endTime: string }) => {
+  async ({ startTime, endTime }: FetchMeritParams) => {
     const response = await fetchMeritData(startTime, endTime);
     return response;
   }
@@ -28,8 +35,10 @@ const meritDataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMeritDataAsync.pending, (state) => {
-        state.isLoading = true;
+      .addCase(fetchMeritDataAsync.pending, (state, action) => {
+        if (!action.meta.arg.silent) {
+          state.isLoading = true;
+        }
         state.error = null;
       })
       .addCase(fetchMeritDataAsync.fulfilled, (state, action: PayloadAction<MeritData>) => {

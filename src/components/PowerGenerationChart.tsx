@@ -1,163 +1,166 @@
 import { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import { useAppSelector } from '../hooks/reduxHooks';
+import { useTheme } from '../context/ThemeContext';
+import { usePlotContainerSize } from '../hooks/usePlotContainerSize';
 import { ensureDataParsed } from '../utils/dataUtils';
 import { Layout, Data } from 'plotly.js';
 
+const CHART_FONT = '"Inter", "Segoe UI", system-ui, sans-serif';
+
 const PowerGenerationChart = () => {
-  const { data, isLoading } = useAppSelector(state => state.meritData);
-  
+  const { resolvedTheme } = useTheme();
+  const { data, isLoading } = useAppSelector((state) => state.meritData);
+  const { ref: plotRef, width: cw, height: ch } = usePlotContainerSize();
+
   const parsedData = useMemo(() => ensureDataParsed(data), [data]);
-  
+
   const plotData = useMemo(() => {
-    if (!parsedData || !parsedData.timeseries_values) return [] as Data[];
+    if (!parsedData?.timeseries_values) return [] as Data[];
 
     const timeseries = parsedData.timeseries_values;
-    
-    // Retro game color palette with icons
+
     return [
       {
         x: timeseries.timestamps || [],
         y: timeseries.thermal_generation || [],
-        name: '🔥 THERMAL',
+        name: 'Thermal',
         type: 'scatter' as const,
         mode: 'lines' as const,
         stackgroup: 'one',
-        fillcolor: '#FF5500', // Bright orange-red
+        fillcolor: 'rgba(234, 88, 12, 0.85)',
+        line: { width: 0 },
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.gas_generation || [],
-        name: '💨 GAS',
+        name: 'Gas',
         type: 'scatter' as const,
         mode: 'lines' as const,
         stackgroup: 'one',
-        fillcolor: '#00AAFF', // Bright blue
+        fillcolor: 'rgba(3, 105, 161, 0.85)',
+        line: { width: 0 },
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.hydro_generation || [],
-        name: '💧 HYDRO',
+        name: 'Hydro',
         type: 'scatter' as const,
         mode: 'lines' as const,
         stackgroup: 'one',
-        fillcolor: '#0066FF', // Deep blue
+        fillcolor: 'rgba(13, 148, 136, 0.85)',
+        line: { width: 0 },
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.nuclear_generation || [],
-        name: '☢️ NUCLEAR',
+        name: 'Nuclear',
         type: 'scatter' as const,
         mode: 'lines' as const,
         stackgroup: 'one',
-        fillcolor: '#AA00FF', // Bright purple
+        fillcolor: 'rgba(124, 58, 237, 0.85)',
+        line: { width: 0 },
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.renewable_generation || [],
-        name: '♻️ RENEWABLE',
+        name: 'Renewable',
         type: 'scatter' as const,
         mode: 'lines' as const,
         stackgroup: 'one',
-        fillcolor: '#00FF44', // Bright green
+        fillcolor: 'rgba(22, 163, 74, 0.85)',
+        line: { width: 0 },
       },
       {
         x: timeseries.timestamps || [],
         y: timeseries.demand_met || [],
-        name: '⚡ DEMAND',
+        name: 'Demand met',
         type: 'scatter' as const,
         mode: 'lines' as const,
-        line: { color: '#FF0000', width: 3 },
+        line: { color: '#dc2626', width: 2.5 },
       },
     ];
   }, [parsedData]);
 
   const layout = useMemo(() => {
-    // Check if dark mode is enabled
-    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // Retro game color palette
-    const bgColor = prefersDarkMode ? '#111122' : '#CCFFFF';
-    const gridColor = prefersDarkMode ? '#334455' : '#88AAAA';
-    const textColor = prefersDarkMode ? '#00FFAA' : '#227722';
-    const titleColor = prefersDarkMode ? '#00FF66' : '#005500';
-    
+    const prefersDarkMode = resolvedTheme === 'dark';
+
+    const paperBg = prefersDarkMode ? '#0f172a' : '#ffffff';
+    const plotBg = prefersDarkMode ? '#1e293b' : '#f8fafc';
+    const gridColor = prefersDarkMode ? '#334155' : '#e2e8f0';
+    const textColor = prefersDarkMode ? '#cbd5e1' : '#475569';
+    const titleColor = prefersDarkMode ? '#f1f5f9' : '#1e293b';
+
+    const hasSize = cw > 0 && ch > 0;
+
     return {
       title: {
-        text: 'POWER GENERATION TRACKER',
+        text: 'Power generation',
         font: {
-          size: 24,
+          size: 18,
           color: titleColor,
-          family: '"Press Start 2P", "Courier New", monospace'
+          family: CHART_FONT,
         },
-        y: 0.95
+        y: 0.98,
+        x: 0,
+        xanchor: 'left' as const,
       },
-      xaxis: { 
-        title: 'TIME',
+      xaxis: {
+        title: { text: 'Time', font: { family: CHART_FONT, size: 12, color: textColor } },
         gridcolor: gridColor,
         linecolor: gridColor,
+        zerolinecolor: gridColor,
         color: textColor,
-        tickfont: {
-          family: '"Courier New", monospace',
-          size: 12
-        }
+        tickfont: { family: CHART_FONT, size: 11, color: textColor },
       },
-      yaxis: { 
-        title: 'POWER (MW)',
+      yaxis: {
+        title: { text: 'Power (MW)', font: { family: CHART_FONT, size: 12, color: textColor } },
         gridcolor: gridColor,
         linecolor: gridColor,
+        zerolinecolor: gridColor,
         color: textColor,
-        tickfont: {
-          family: '"Courier New", monospace',
-          size: 12
-        }
+        tickfont: { family: CHART_FONT, size: 11, color: textColor },
       },
       autosize: true,
-      height: 500,
-      margin: { l: 60, r: 30, b: 50, t: 80, pad: 4 },
-      legend: { 
-        orientation: 'h' as const,
-        y: -0.15,
-        bgcolor: prefersDarkMode ? 'rgba(16, 24, 48, 0.8)' : 'rgba(204, 255, 255, 0.8)',
+      ...(hasSize ? { width: cw, height: ch } : {}),
+      margin: { l: 56, r: 108, b: 44, t: 48, pad: 2 },
+      legend: {
+        orientation: 'v' as const,
+        x: 1.01,
+        xanchor: 'left' as const,
+        y: 1,
+        yanchor: 'top' as const,
+        bgcolor: prefersDarkMode ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.92)',
         bordercolor: gridColor,
-        borderwidth: 2,
-        font: {
-          family: '"Courier New", monospace',
-          size: 12,
-          color: textColor
-        }
+        borderwidth: 1,
+        font: { family: CHART_FONT, size: 10, color: textColor },
       },
-      plot_bgcolor: bgColor,
-      paper_bgcolor: bgColor,
-      font: {
-        family: '"Courier New", monospace',
-        color: textColor
-      }
+      plot_bgcolor: plotBg,
+      paper_bgcolor: paperBg,
+      font: { family: CHART_FONT, color: textColor },
     } as Partial<Layout>;
-  }, []);
-
-  if (isLoading) {
-    return <div className="retro-loading">LOADING DATA<span className="retro-loading-dots">...</span></div>;
-  }
-
-  if (!parsedData || !parsedData.timeseries_values) {
-    return <div className="retro-error">NO DATA AVAILABLE</div>;
-  }
+  }, [cw, ch, resolvedTheme]);
 
   return (
-    <div className="retro-chart-container">
-      <Plot
-        data={plotData}
-        layout={layout}
-        useResizeHandler={true}
-        style={{ width: '100%', height: '100%' }}
-        config={{ 
-          responsive: true,
-          displayModeBar: false 
-        }}
-      />
+    <div className="chart-container" ref={plotRef}>
+      {isLoading ? (
+        <p className="loading">Loading chart…</p>
+      ) : !parsedData?.timeseries_values ? (
+        <p className="error">No data available for this range.</p>
+      ) : cw > 0 && ch > 0 ? (
+        <Plot
+          data={plotData}
+          layout={layout}
+          useResizeHandler={true}
+          style={{ width: '100%', height: '100%' }}
+          config={{
+            responsive: true,
+            displayModeBar: false,
+          }}
+        />
+      ) : null}
     </div>
   );
 };
 
-export default PowerGenerationChart; 
+export default PowerGenerationChart;

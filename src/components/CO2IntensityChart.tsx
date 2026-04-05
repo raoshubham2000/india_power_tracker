@@ -1,115 +1,112 @@
 import { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import { useAppSelector } from '../hooks/reduxHooks';
+import { useTheme } from '../context/ThemeContext';
+import { usePlotContainerSize } from '../hooks/usePlotContainerSize';
 import { ensureDataParsed } from '../utils/dataUtils';
 import { ScatterData } from 'plotly.js';
 
+const CHART_FONT = '"Inter", "Segoe UI", system-ui, sans-serif';
+
 const CO2IntensityChart = () => {
-  const { data, isLoading } = useAppSelector(state => state.meritData);
-  
-  // Use the same parsing approach as PowerGenerationChart
+  const { resolvedTheme } = useTheme();
+  const { data, isLoading } = useAppSelector((state) => state.meritData);
+  const { ref: plotRef, width: cw, height: ch } = usePlotContainerSize();
+
   const parsedData = useMemo(() => ensureDataParsed(data), [data]);
-  
+
   const plotData = useMemo(() => {
-    if (!parsedData || !parsedData.timeseries_values) return [];
+    if (!parsedData?.timeseries_values) return [];
 
     const timeseries = parsedData.timeseries_values;
-    
-    // Retro game color palette
-    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // 8-bit inspired retro colors
-    const lineColor = prefersDarkMode ? '#00FF66' : '#00CC44'; // Bright retro green
-    const fillColor = prefersDarkMode ? 'rgba(0, 255, 102, 0.2)' : 'rgba(0, 204, 68, 0.15)';
-    
-    return [{
+    const prefersDarkMode = resolvedTheme === 'dark';
+
+    const lineColor = prefersDarkMode ? '#34d399' : '#059669';
+    const fillColor = prefersDarkMode ? 'rgba(52, 211, 153, 0.2)' : 'rgba(5, 150, 105, 0.12)';
+
+    return [
+      {
         x: timeseries.timestamps || [],
         y: timeseries.g_co2_per_kwh || [],
         type: 'scatter' as const,
         mode: 'lines',
-        name: 'CO2 Intensity',
-        line: { color: lineColor, width: 3},
+        name: 'CO₂ intensity',
+        line: { color: lineColor, width: 2 },
         fill: 'tozeroy',
-        fillcolor: fillColor
-    }] as ScatterData[];
-  }, [parsedData]);
+        fillcolor: fillColor,
+      },
+    ] as ScatterData[];
+  }, [parsedData, resolvedTheme]);
 
   const layout = useMemo(() => {
-    // Check if dark mode is enabled
-    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // Retro game color palette
-    const bgColor = prefersDarkMode ? '#111122' : '#CCFFCC';
-    const gridColor = prefersDarkMode ? '#334455' : '#88AA88';
-    const textColor = prefersDarkMode ? '#00FFAA' : '#227722';
-    const titleColor = prefersDarkMode ? '#00FF66' : '#005500';
-    
+    const prefersDarkMode = resolvedTheme === 'dark';
+
+    const paperBg = prefersDarkMode ? '#0f172a' : '#ffffff';
+    const plotBg = prefersDarkMode ? '#1e293b' : '#f8fafc';
+    const gridColor = prefersDarkMode ? '#334155' : '#e2e8f0';
+    const textColor = prefersDarkMode ? '#cbd5e1' : '#475569';
+    const titleColor = prefersDarkMode ? '#f1f5f9' : '#1e293b';
+
+    const hasSize = cw > 0 && ch > 0;
+
     return {
       title: {
-        text: 'CO2 INTENSITY TRACKER',
+        text: 'CO₂ intensity',
         font: {
-          size: 24,
+          size: 18,
           color: titleColor,
-          family: '"Press Start 2P", "Courier New", monospace'
+          family: CHART_FONT,
         },
-        y: 0.95
+        y: 0.98,
+        x: 0,
+        xanchor: 'left' as const,
       },
-      xaxis: { 
-        title: 'TIME',
+      xaxis: {
+        title: { text: 'Time', font: { family: CHART_FONT, size: 12, color: textColor } },
         gridcolor: gridColor,
         linecolor: gridColor,
+        zerolinecolor: gridColor,
         color: textColor,
-        tickfont: {
-          family: '"Courier New", monospace',
-          size: 12
-        }
+        tickfont: { family: CHART_FONT, size: 11, color: textColor },
       },
-      yaxis: { 
-        title: 'CO2 (g/kWh)',
+      yaxis: {
+        title: { text: 'CO₂ (g/kWh)', font: { family: CHART_FONT, size: 12, color: textColor } },
         gridcolor: gridColor,
         linecolor: gridColor,
+        zerolinecolor: gridColor,
         color: textColor,
-        tickfont: {
-          family: '"Courier New", monospace',
-          size: 12
-        }
+        tickfont: { family: CHART_FONT, size: 11, color: textColor },
       },
       autosize: true,
-      height: 500,
-      margin: { l: 60, r: 30, b: 40, t: 80, pad: 4 },
-      plot_bgcolor: bgColor,
-      paper_bgcolor: bgColor,
-      font: {
-        family: '"Courier New", monospace',
-        color: textColor
-      }
+      ...(hasSize ? { width: cw, height: ch } : {}),
+      margin: { l: 56, r: 20, b: 44, t: 48, pad: 2 },
+      plot_bgcolor: plotBg,
+      paper_bgcolor: paperBg,
+      font: { family: CHART_FONT, color: textColor },
+      showlegend: false,
     };
-  }, []);
-
-  // Add loading state with retro style
-  if (isLoading) {
-    return <div className="retro-loading">LOADING DATA<span className="retro-loading-dots">...</span></div>;
-  }
-
-  // Check if data needs to be parsed with retro style
-  if (!parsedData || !parsedData.timeseries_values) {
-    return <div className="retro-error">NO DATA AVAILABLE</div>;
-  }
+  }, [cw, ch, resolvedTheme]);
 
   return (
-    <div className="retro-chart-container">
-      <Plot
-        data={plotData}
-        layout={layout}
-        useResizeHandler={true}
-        style={{ width: '100%', height: '100%' }}
-        config={{ 
-          responsive: true,
-          displayModeBar: false 
-        }}
-      />
+    <div className="chart-container" ref={plotRef}>
+      {isLoading ? (
+        <p className="loading">Loading chart…</p>
+      ) : !parsedData?.timeseries_values ? (
+        <p className="error">No data available for this range.</p>
+      ) : cw > 0 && ch > 0 ? (
+        <Plot
+          data={plotData}
+          layout={layout}
+          useResizeHandler={true}
+          style={{ width: '100%', height: '100%' }}
+          config={{
+            responsive: true,
+            displayModeBar: false,
+          }}
+        />
+      ) : null}
     </div>
   );
 };
 
-export default CO2IntensityChart; 
+export default CO2IntensityChart;

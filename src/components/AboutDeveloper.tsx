@@ -4,7 +4,7 @@ const AboutDeveloper = () => {
   return (
     <div className="about-developer-container">
       <div className="developer-header">
-        <h1>SHUBHAM RAO</h1>
+        <h1>Shubham Rao</h1>
         <h2>Digital Solutions Engineer</h2>
         <div className="contact-info">
           <p>raoshubham@hotmail.com | Vijayanagar, Karnataka</p>
@@ -12,7 +12,7 @@ const AboutDeveloper = () => {
       </div>
 
       <section className="developer-section">
-        <h3>SUMMARY</h3>
+        <h3>Summary</h3>
         <p>
           Experienced Digital Solutions Engineer with a background in energy
           digitalization and business analysis. I specialize in creating AI-powered
@@ -25,9 +25,9 @@ const AboutDeveloper = () => {
       </section>
 
       <section className="developer-section">
-        <h3>NOTABLE PROJECTS</h3>
+        <h3>Notable projects</h3>
         <div className="project-item">
-          <h4>In-House IDCC Platform</h4>
+          <h4>In-house IDCC platform</h4>
           <p>09/2024 - Present | Hyderabad, India</p>
           <ul>
             <li>Built using FastAPI and Vite</li>
@@ -36,7 +36,7 @@ const AboutDeveloper = () => {
           </ul>
         </div>
         <div className="project-item">
-          <h4>AI Vision Implementation</h4>
+          <h4>AI vision implementation</h4>
           <p>11/2024 - Present | Thermal Plant Vijayanagar</p>
           <ul>
             <li>Deployed custom YOLO-trained models for PPE compliance detection</li>
@@ -46,12 +46,20 @@ const AboutDeveloper = () => {
       </section>
 
       <div className="portfolio-link">
-        <a href="https://raoshubham2000.github.io/" target="_blank" rel="noopener noreferrer" className="retro-btn">
-          <span className="retro-btn-icon">🌐</span> VIEW PORTFOLIO
+        <a
+          href="https://raoshubham2000.github.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="portfolio-btn"
+        >
+          <span className="portfolio-btn-icon" aria-hidden>
+            ↗
+          </span>
+          View portfolio
         </a>
       </div>
     </div>
   );
 };
 
-export default AboutDeveloper; 
+export default AboutDeveloper;

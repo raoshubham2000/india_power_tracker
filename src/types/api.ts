@@ -1,15 +1,20 @@
+export interface MeritTimeseries {
+  timestamps: string[];
+  thermal_generation: number[];
+  gas_generation: number[];
+  hydro_generation: number[];
+  nuclear_generation: number[];
+  renewable_generation: number[];
+  g_co2_per_kwh: number[];
+  demand_met: number[];
+  net_demand: number[];
+  tons_co2?: number[];
+  total_generation?: number[];
+  tons_co2_per_mwh?: number[];
+}
+
 export interface MeritData {
-  timeseries_values: {
-    timestamps: string[];
-    thermal_generation: number[];
-    gas_generation: number[];
-    hydro_generation: number[];
-    nuclear_generation: number[];
-    renewable_generation: number[];
-    g_co2_per_kwh: number[];
-    demand_met: number[];
-    net_demand: number[];
-  };
+  timeseries_values: MeritTimeseries;
   max_co2_per_kwh: number;
   max_co2_per_kwh_time: string;
   min_co2_per_kwh: number;
